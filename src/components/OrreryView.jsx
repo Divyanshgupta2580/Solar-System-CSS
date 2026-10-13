@@ -26,17 +26,17 @@ export default function OrreryView({
   // Pre-calculate Asteroid Belt particles (rendered in high-performance SVG)
   const asteroidParticles = useMemo(() => {
     const list = [];
-    for (let i = 0; i < 140; i++) {
-      const angle = (i / 140) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
+    for (let i = 0; i < 160; i++) {
+      const angle = (i / 160) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
       const rad = ASTEROID_BELT.innerRadius + Math.random() * (ASTEROID_BELT.outerRadius - ASTEROID_BELT.innerRadius);
-      const r = Math.random() * 1.2 + 0.8;
-      const opacity = Math.random() * 0.6 + 0.3;
+      const r = Math.random() * 1.4 + 0.8;
+      const opacity = Math.random() * 0.65 + 0.35;
       list.push({
         cx: Math.cos(angle) * rad,
         cy: Math.sin(angle) * rad,
         r,
         opacity,
-        color: i % 2 === 0 ? '#cbd5e1' : '#94a3b8'
+        color: i % 2 === 0 ? '#e2e8f0' : '#94a3b8'
       });
     }
     return list;
@@ -45,17 +45,17 @@ export default function OrreryView({
   // Pre-calculate Kuiper Belt particles (rendered in high-performance SVG)
   const kuiperParticles = useMemo(() => {
     const list = [];
-    for (let i = 0; i < 180; i++) {
-      const angle = (i / 180) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
+    for (let i = 0; i < 200; i++) {
+      const angle = (i / 200) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
       const rad = KUIPER_BELT.innerRadius + Math.random() * (KUIPER_BELT.outerRadius - KUIPER_BELT.innerRadius);
-      const r = Math.random() * 1.5 + 0.7;
-      const opacity = Math.random() * 0.5 + 0.2;
+      const r = Math.random() * 1.6 + 0.7;
+      const opacity = Math.random() * 0.55 + 0.25;
       list.push({
         cx: Math.cos(angle) * rad,
         cy: Math.sin(angle) * rad,
         r,
         opacity,
-        color: i % 3 === 0 ? '#93c5fd' : '#e2e8f0'
+        color: i % 3 === 0 ? '#93c5fd' : '#f8fafc'
       });
     }
     return list;
@@ -85,15 +85,24 @@ export default function OrreryView({
           willChange: 'transform'
         }}
       >
-        {/* ================= SUN (Center) ================= */}
+        {/* ================= SUN (Center Star) ================= */}
         <div
           className="sun-wrapper"
           onClick={(e) => handlePlanetClick(e, sun)}
           title="Click to inspect the Sun"
         >
-          {/* Animated solar corona rays & flares */}
+          {/* Anamorphic Lens Flare Beams */}
+          <div className="sun-lens-flare sun-flare-h" />
+          <div className="sun-lens-flare sun-flare-v" />
+          <div className="sun-lens-flare sun-flare-diag1" />
+          <div className="sun-lens-flare sun-flare-diag2" />
+
+          {/* Animated Solar Corona & Prominences */}
           <div className="sun-corona" />
           <div className="sun-plasma-burst" />
+          <div className="sun-prominence prominence-1" />
+          <div className="sun-prominence prominence-2" />
+
           <div
             className={`sun-body ${selectedPlanet?.id === 'sun' ? 'body-selected' : ''}`}
             style={{
@@ -173,7 +182,7 @@ export default function OrreryView({
           </div>
         )}
 
-        {/* ================= 9 PLANET ORBITS ================= */}
+        {/* ================= 9 PLANET CIRCULAR ORBITS ================= */}
         {planets.map((planet) => {
           const isSelected = selectedPlanet?.id === planet.id;
           const orbitDiameter = planet.orbitRadius * 2;
@@ -193,12 +202,35 @@ export default function OrreryView({
                 borderColor: isSelected
                   ? planet.color
                   : showOrbits
-                  ? 'rgba(255, 255, 255, 0.12)'
+                  ? 'rgba(56, 189, 248, 0.22)'
                   : 'transparent',
+                boxShadow: isSelected
+                  ? `0 0 25px ${planet.color}, inset 0 0 15px ${planet.color}`
+                  : showOrbits
+                  ? '0 0 10px rgba(56, 189, 248, 0.08)'
+                  : 'none',
                 willChange: 'transform'
               }}
             >
-              {/* Planet anchor node placed at the top rim of the orbit track */}
+              {/* Quadrant Precision Degree Ticks for Orrery Feel */}
+              {showOrbits && (
+                <>
+                  <div className="orbit-tick tick-0" />
+                  <div className="orbit-tick tick-90" />
+                  <div className="orbit-tick tick-180" />
+                  <div className="orbit-tick tick-270" />
+                </>
+              )}
+
+              {/* Luminous orbital trail behind planet */}
+              <div
+                className="orbit-trail"
+                style={{
+                  borderColor: isSelected ? planet.color : 'rgba(56, 189, 248, 0.35)'
+                }}
+              />
+
+              {/* Planet anchor node placed on the circular orbit path */}
               <div
                 className="planet-anchor"
                 style={{
@@ -206,7 +238,7 @@ export default function OrreryView({
                   left: `calc(50% - ${planet.displaySize / 2}px)`
                 }}
               >
-                {/* Counter-rotation to keep the planet and its label right-side up */}
+                {/* Counter-rotation to keep the planet orientation right-side up */}
                 <div
                   className="planet-counter-rotator"
                   style={{
@@ -226,11 +258,11 @@ export default function OrreryView({
                       className="planet-atmosphere-glow"
                       style={{
                         backgroundColor: planet.glowColor,
-                        transform: isSelected ? 'scale(1.8)' : 'scale(1.3)'
+                        transform: isSelected ? 'scale(1.9)' : 'scale(1.4)'
                       }}
                     />
 
-                    {/* Planet Sphere */}
+                    {/* Planet Sphere Body */}
                     <div
                       className="planet-sphere"
                       style={{
@@ -240,19 +272,46 @@ export default function OrreryView({
                         boxShadow: planet.cssVisual.boxShadow
                       }}
                     >
-                      {/* Saturn Rings */}
+                      {/* Earth Dynamic Rotating Clouds */}
+                      {planet.id === 'earth' && (
+                        <div className="earth-clouds-layer" />
+                      )}
+
+                      {/* Mars Polar Ice Cap */}
+                      {planet.id === 'mars' && (
+                        <div className="mars-polar-ice" />
+                      )}
+
+                      {/* Jupiter Great Red Spot Storm */}
+                      {planet.id === 'jupiter' && (
+                        <div className="jupiter-great-red-spot" />
+                      )}
+
+                      {/* Saturn Multi-Banded Rings with Realistic Axial Tilt */}
                       {planet.hasRings && planet.id === 'saturn' && (
                         <div className="saturn-rings-assembly">
                           <div className="saturn-ring-outer" />
+                          <div className="saturn-ring-cassini" />
                           <div className="saturn-ring-inner" />
+                          <div className="saturn-ring-shadow" />
                         </div>
                       )}
 
-                      {/* Uranus Delicate Ring */}
+                      {/* Uranus Inclined Ring Disc */}
                       {planet.hasRings && planet.id === 'uranus' && (
                         <div className="uranus-ring-assembly">
                           <div className="uranus-ring-disc" />
                         </div>
+                      )}
+
+                      {/* Neptune Storm Cirrus Streaks */}
+                      {planet.id === 'neptune' && (
+                        <div className="neptune-storm-spot" />
+                      )}
+
+                      {/* Pluto Tombaugh Regio Heart */}
+                      {planet.id === 'pluto' && (
+                        <div className="pluto-ice-heart" />
                       )}
 
                       {/* Planet Day/Night Terminator Shadow */}
@@ -264,10 +323,10 @@ export default function OrreryView({
                       <div
                         className="sub-orbit-moon"
                         style={{
-                          width: `${planet.displaySize * 2.4}px`,
-                          height: `${planet.displaySize * 2.4}px`,
+                          width: `${planet.displaySize * 2.5}px`,
+                          height: `${planet.displaySize * 2.5}px`,
                           animationPlayState: isPlaying ? 'running' : 'paused',
-                          animationDuration: `${Math.max(2.5, animDuration * 0.12)}s`
+                          animationDuration: `${Math.max(2.4, animDuration * 0.12)}s`
                         }}
                       >
                         <div

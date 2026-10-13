@@ -12,7 +12,7 @@ import { soundEngine } from './utils/audio';
 
 export default function App() {
   const [selectedPlanet, setSelectedPlanet] = useState(null);
-  const [is3DView, setIs3DView] = useState(true);
+  const [is3DView, setIs3DView] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [speedMultiplier, setSpeedMultiplier] = useState(1);
   const [showOrbits, setShowOrbits] = useState(true);

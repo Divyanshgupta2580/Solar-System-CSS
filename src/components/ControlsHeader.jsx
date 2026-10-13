@@ -119,21 +119,21 @@ export default function ControlsHeader({
           ))}
         </div>
 
-        {/* 3D vs 2D Perspective Toggle */}
+        {/* Parallel vs 3D Perspective Toggle */}
         <button
           onClick={() => {
             soundEngine.playClick();
             setIs3DView(!is3DView);
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all border ${
-            is3DView
-              ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+            !is3DView
+              ? 'bg-sky-500/20 text-sky-300 border-sky-500/40 shadow-sm'
               : 'bg-white/5 text-slate-300 border-white/10 hover:text-white'
           }`}
-          title="Toggle 3D Angled Perspective vs 2D Flat Schematic"
+          title={!is3DView ? 'Parallel to Screen (Circular Orbits Active) • Click to tilt 3D' : '3D Angled View Active • Click for Parallel Circular View'}
         >
           <Box className="w-3.5 h-3.5" />
-          <span>{is3DView ? '3D View' : '2D Schematic'}</span>
+          <span>{is3DView ? '3D Angled' : 'Parallel (Circular)'}</span>
         </button>
       </div>
 
