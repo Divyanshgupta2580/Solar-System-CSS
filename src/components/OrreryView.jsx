@@ -14,47 +14,48 @@ export default function OrreryView({
   showMoons,
   zoom,
   panOffset,
-  onMouseDown
+  isInteracting,
+  onMouseDown,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd
 }) {
   const sun = CELESTIAL_BODIES[0];
   const planets = CELESTIAL_BODIES.slice(1);
 
-  // Generate Asteroid Belt particles
+  // Pre-calculate Asteroid Belt particles (rendered in high-performance SVG)
   const asteroidParticles = useMemo(() => {
     const list = [];
-    for (let i = 0; i < ASTEROID_BELT.particleCount; i++) {
-      const angle = (i / ASTEROID_BELT.particleCount) * 360 + (Math.random() * 8 - 4);
+    for (let i = 0; i < 140; i++) {
+      const angle = (i / 140) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
       const rad = ASTEROID_BELT.innerRadius + Math.random() * (ASTEROID_BELT.outerRadius - ASTEROID_BELT.innerRadius);
-      const size = Math.random() * 2.2 + 1;
-      const opacity = Math.random() * 0.6 + 0.25;
-      const gray = Math.floor(Math.random() * 60 + 140);
+      const r = Math.random() * 1.2 + 0.8;
+      const opacity = Math.random() * 0.6 + 0.3;
       list.push({
-        id: `ast-${i}`,
-        angle,
-        rad,
-        size,
+        cx: Math.cos(angle) * rad,
+        cy: Math.sin(angle) * rad,
+        r,
         opacity,
-        color: `rgb(${gray}, ${gray - 10}, ${gray - 20})`
+        color: i % 2 === 0 ? '#cbd5e1' : '#94a3b8'
       });
     }
     return list;
   }, []);
 
-  // Generate Kuiper Belt particles
+  // Pre-calculate Kuiper Belt particles (rendered in high-performance SVG)
   const kuiperParticles = useMemo(() => {
     const list = [];
-    for (let i = 0; i < KUIPER_BELT.particleCount; i++) {
-      const angle = (i / KUIPER_BELT.particleCount) * 360 + (Math.random() * 10 - 5);
+    for (let i = 0; i < 180; i++) {
+      const angle = (i / 180) * Math.PI * 2 + (Math.random() * 0.15 - 0.075);
       const rad = KUIPER_BELT.innerRadius + Math.random() * (KUIPER_BELT.outerRadius - KUIPER_BELT.innerRadius);
-      const size = Math.random() * 2.5 + 1;
-      const opacity = Math.random() * 0.5 + 0.15;
+      const r = Math.random() * 1.5 + 0.7;
+      const opacity = Math.random() * 0.5 + 0.2;
       list.push({
-        id: `kuiper-${i}`,
-        angle,
-        rad,
-        size,
+        cx: Math.cos(angle) * rad,
+        cy: Math.sin(angle) * rad,
+        r,
         opacity,
-        color: Math.random() > 0.5 ? '#93c5fd' : '#cbd5e1'
+        color: i % 3 === 0 ? '#93c5fd' : '#e2e8f0'
       });
     }
     return list;
@@ -68,15 +69,20 @@ export default function OrreryView({
 
   return (
     <div
-      className="orrery-container select-none cursor-grab active:cursor-grabbing"
+      className="orrery-container select-none cursor-grab active:cursor-grabbing touch-none"
       onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <div
         className={`orrery-stage ${is3DView ? 'mode-3d' : 'mode-2d'}`}
         style={{
-          transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom}) ${
+          transform: `translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoom}) ${
             is3DView ? 'rotateX(62deg) rotateZ(-16deg)' : 'rotateX(0deg) rotateZ(0deg)'
-          }`
+          }`,
+          transition: isInteracting ? 'none' : 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+          willChange: 'transform'
         }}
       >
         {/* ================= SUN (Center) ================= */}
@@ -107,63 +113,63 @@ export default function OrreryView({
           )}
         </div>
 
-        {/* ================= ASTEROID BELT ================= */}
+        {/* ================= ASTEROID BELT (High-Performance SVG) ================= */}
         {showBelts && (
           <div
-            className="belt-container asteroid-belt"
+            className="belt-svg-wrapper asteroid-belt"
             style={{
               animationPlayState: isPlaying ? 'running' : 'paused',
               animationDuration: `${36 / speedMultiplier}s`
             }}
           >
-            {asteroidParticles.map((ast) => {
-              const radAngle = (ast.angle * Math.PI) / 180;
-              const x = Math.cos(radAngle) * ast.rad;
-              const y = Math.sin(radAngle) * ast.rad;
-              return (
-                <div
-                  key={ast.id}
-                  className="asteroid-particle"
-                  style={{
-                    transform: `translate(${x}px, ${y}px)`,
-                    width: `${ast.size}px`,
-                    height: `${ast.size}px`,
-                    backgroundColor: ast.color,
-                    opacity: ast.opacity
-                  }}
+            <svg
+              className="belt-svg"
+              width="600"
+              height="600"
+              viewBox="-300 -300 600 600"
+              style={{ overflow: 'visible' }}
+            >
+              {asteroidParticles.map((ast, idx) => (
+                <circle
+                  key={idx}
+                  cx={ast.cx}
+                  cy={ast.cy}
+                  r={ast.r}
+                  fill={ast.color}
+                  opacity={ast.opacity}
                 />
-              );
-            })}
+              ))}
+            </svg>
           </div>
         )}
 
-        {/* ================= KUIPER BELT ================= */}
+        {/* ================= KUIPER BELT (High-Performance SVG) ================= */}
         {showBelts && (
           <div
-            className="belt-container kuiper-belt"
+            className="belt-svg-wrapper kuiper-belt"
             style={{
               animationPlayState: isPlaying ? 'running' : 'paused',
               animationDuration: `${140 / speedMultiplier}s`
             }}
           >
-            {kuiperParticles.map((kp) => {
-              const radAngle = (kp.angle * Math.PI) / 180;
-              const x = Math.cos(radAngle) * kp.rad;
-              const y = Math.sin(radAngle) * kp.rad;
-              return (
-                <div
-                  key={kp.id}
-                  className="kuiper-particle"
-                  style={{
-                    transform: `translate(${x}px, ${y}px)`,
-                    width: `${kp.size}px`,
-                    height: `${kp.size}px`,
-                    backgroundColor: kp.color,
-                    opacity: kp.opacity
-                  }}
+            <svg
+              className="belt-svg"
+              width="1100"
+              height="1100"
+              viewBox="-550 -550 1100 1100"
+              style={{ overflow: 'visible' }}
+            >
+              {kuiperParticles.map((kp, idx) => (
+                <circle
+                  key={idx}
+                  cx={kp.cx}
+                  cy={kp.cy}
+                  r={kp.r}
+                  fill={kp.color}
+                  opacity={kp.opacity}
                 />
-              );
-            })}
+              ))}
+            </svg>
           </div>
         )}
 
@@ -188,7 +194,8 @@ export default function OrreryView({
                   ? planet.color
                   : showOrbits
                   ? 'rgba(255, 255, 255, 0.12)'
-                  : 'transparent'
+                  : 'transparent',
+                willChange: 'transform'
               }}
             >
               {/* Planet anchor node placed at the top rim of the orbit track */}
@@ -204,7 +211,8 @@ export default function OrreryView({
                   className="planet-counter-rotator"
                   style={{
                     animationPlayState: isPlaying ? 'running' : 'paused',
-                    animationDuration: `${animDuration}s`
+                    animationDuration: `${animDuration}s`,
+                    willChange: 'transform'
                   }}
                 >
                   {/* Planet Sphere Button */}

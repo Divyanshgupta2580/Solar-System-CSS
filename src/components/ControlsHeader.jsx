@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Play, 
   Pause, 
@@ -12,7 +12,8 @@ import {
   SlidersHorizontal, 
   HelpCircle, 
   ArrowRightLeft,
-  Box
+  Box,
+  Move
 } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 
@@ -55,7 +56,9 @@ export default function ControlsHeader({
 
   const handleZoom = (delta) => {
     soundEngine.playClick();
-    setZoom((prev) => Math.min(2.5, Math.max(0.4, +(prev + delta).toFixed(2))));
+    const current = typeof zoom === 'number' ? zoom : 0.85;
+    const next = +(current + delta).toFixed(2);
+    setZoom(Math.min(4.5, Math.max(0.2, next)));
   };
 
   return (
@@ -144,7 +147,7 @@ export default function ControlsHeader({
         >
           <ZoomIn className="w-4 h-4" />
         </button>
-        <span className="text-[11px] text-slate-400 font-mono w-9 text-center">
+        <span className="text-[11px] text-slate-400 font-mono w-12 text-center transition-all duration-150">
           {Math.round(zoom * 100)}%
         </span>
         <button
