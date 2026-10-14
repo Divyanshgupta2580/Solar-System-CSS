@@ -1,18 +1,4 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Volume2, 
-  Orbit, 
-  Thermometer, 
-  Globe2, 
-  Clock, 
-  Compass, 
-  Weight, 
-  Sparkles, 
-  Rocket, 
-  ArrowRightLeft,
-  ChevronRight
-} from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 
 export default function PlanetCard({ planet, onClose, onOpenCompare }) {
@@ -85,14 +71,14 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
               title="Listen to planetary resonance probe audio"
               aria-label="Play planetary audio"
             >
-              <Volume2 className="w-4 h-4" />
+              🔊
             </button>
             <button
               onClick={onClose}
               className="p-2.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10"
               aria-label="Close planet card"
             >
-              <X className="w-4 h-4" />
+              ✕
             </button>
           </div>
         </div>
@@ -135,7 +121,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="metric-box">
                   <div className="metric-icon text-sky-400">
-                    <Globe2 className="w-4 h-4" />
+                    🌍
                   </div>
                   <div>
                     <div className="metric-label">Diameter</div>
@@ -145,7 +131,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
 
                 <div className="metric-box">
                   <div className="metric-icon text-amber-400">
-                    <Orbit className="w-4 h-4" />
+                    🛰️
                   </div>
                   <div>
                     <div className="metric-label">Distance from Sun</div>
@@ -156,7 +142,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
 
                 <div className="metric-box">
                   <div className="metric-icon text-emerald-400">
-                    <Clock className="w-4 h-4" />
+                    ⏰
                   </div>
                   <div>
                     <div className="metric-label">Orbital Period</div>
@@ -168,7 +154,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
 
                 <div className="metric-box">
                   <div className="metric-icon text-purple-400">
-                    <Compass className="w-4 h-4" />
+                    🧭
                   </div>
                   <div>
                     <div className="metric-label">Day Length</div>
@@ -178,7 +164,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
 
                 <div className="metric-box">
                   <div className="metric-icon text-rose-400">
-                    <Thermometer className="w-4 h-4" />
+                    🌡️
                   </div>
                   <div>
                     <div className="metric-label">Temperature</div>
@@ -188,7 +174,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
 
                 <div className="metric-box">
                   <div className="metric-icon text-indigo-400">
-                    <Weight className="w-4 h-4" />
+                    ⚖️
                   </div>
                   <div>
                     <div className="metric-label">Surface Gravity</div>
@@ -250,7 +236,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
           {activeTab === 'facts' && (
             <div className="space-y-3">
               <h3 className="text-xs uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+                    ✨
                 Cosmic Curiosities
               </h3>
               <div className="space-y-2.5">
@@ -275,7 +261,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
           {activeTab === 'missions' && (
             <div className="space-y-3">
               <h3 className="text-xs uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
-                <Rocket className="w-4 h-4 text-sky-400" />
+                🚀
                 Historic Exploration Missions
               </h3>
               <div className="space-y-3">
@@ -304,7 +290,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
             onClick={() => onOpenCompare(planet)}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium text-slate-200 hover:text-white bg-white/10 hover:bg-white/15 transition-all border border-white/10"
           >
-            <ArrowRightLeft className="w-3.5 h-3.5 text-sky-400" />
+            ⚖️
             Compare Planet
           </button>
 
@@ -313,7 +299,7 @@ export default function PlanetCard({ planet, onClose, onOpenCompare }) {
             className="flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-semibold text-slate-900 bg-white hover:bg-slate-200 transition-all shadow-md"
           >
             Done
-            <ChevronRight className="w-3.5 h-3.5" />
+            ➡️
           </button>
         </div>
       </div>

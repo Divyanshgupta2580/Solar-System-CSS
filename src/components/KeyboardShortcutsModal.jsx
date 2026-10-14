@@ -1,5 +1,4 @@
 import React from 'react';
-import { X, Keyboard, Command } from 'lucide-react';
 
 export default function KeyboardShortcutsModal({ onClose }) {
   const shortcuts = [
@@ -18,7 +17,7 @@ export default function KeyboardShortcutsModal({ onClose }) {
         <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
-              <Keyboard className="w-4 h-4" />
+              ⌨️
             </div>
             <div>
               <h3 className="text-base font-bold text-white font-cinzel">Keyboard Shortcuts</h3>
@@ -29,7 +28,7 @@ export default function KeyboardShortcutsModal({ onClose }) {
             onClick={onClose}
             className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 

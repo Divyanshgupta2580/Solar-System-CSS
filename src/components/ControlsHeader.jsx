@@ -1,20 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  ZoomIn, 
-  ZoomOut, 
-  Eye, 
-  Layers, 
-  Volume2, 
-  VolumeX, 
-  SlidersHorizontal, 
-  HelpCircle, 
-  ArrowRightLeft,
-  Box,
-  Move
-} from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 
 export default function ControlsHeader({
@@ -95,8 +79,7 @@ export default function ControlsHeader({
           }`}
           title={isPlaying ? 'Pause simulation (Space)' : 'Resume simulation (Space)'}
         >
-          {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-          <span>{isPlaying ? 'Pause' : 'Resume'}</span>
+          <span>{isPlaying ? '⏸ Pause' : '▶ Resume'}</span>
         </button>
 
         {/* Speed multiplier picker */}
@@ -131,10 +114,9 @@ export default function ControlsHeader({
               : 'bg-white/5 text-slate-300 border-white/10 hover:text-white'
           }`}
           title={!is3DView ? 'Parallel to Screen (Circular Orbits Active) • Click to tilt 3D' : '3D Angled View Active • Click for Parallel Circular View'}
-        >
-          <Box className="w-3.5 h-3.5" />
-          <span>{is3DView ? '3D Angled' : 'Parallel (Circular)'}</span>
-        </button>
+          >
+            <span>{is3DView ? '🎲 3D Angled' : '⭕ Parallel (Circular)'}</span>
+          </button>
       </div>
 
       {/* Right Controls (Zoom, Layers, Audio, Compare, Help) */}
@@ -145,7 +127,7 @@ export default function ControlsHeader({
           className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           title="Zoom in (+)"
         >
-          <ZoomIn className="w-4 h-4" />
+          🔍+
         </button>
         <span className="text-[11px] text-slate-400 font-mono w-12 text-center transition-all duration-150">
           {Math.round(zoom * 100)}%
@@ -155,14 +137,14 @@ export default function ControlsHeader({
           className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           title="Zoom out (-)"
         >
-          <ZoomOut className="w-4 h-4" />
+          🔍-
         </button>
         <button
           onClick={onResetView}
           className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors border-r border-white/10 mr-1"
           title="Reset camera view"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
+          🔄
         </button>
 
         {/* View Layers Dropdown */}
@@ -174,7 +156,7 @@ export default function ControlsHeader({
             }`}
             title="Toggle celestial layers & overlays"
           >
-            <Layers className="w-4 h-4" />
+            📋
           </button>
 
           {showLayersDropdown && (
@@ -225,7 +207,7 @@ export default function ControlsHeader({
           className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           title="Compare planets side-by-side"
         >
-          <ArrowRightLeft className="w-4 h-4" />
+          ⚖️
         </button>
 
         {/* Cosmic Ambient Audio Toggle */}
@@ -238,7 +220,7 @@ export default function ControlsHeader({
           }`}
           title={isAudioOn ? 'Mute ambient soundscape' : 'Enable ambient soundscape'}
         >
-          {isAudioOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          {isAudioOn ? '🔊' : '🔇'}
         </button>
 
         {/* Shortcuts / Help Guide */}
@@ -247,7 +229,7 @@ export default function ControlsHeader({
           className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           title="Controls & Shortcuts"
         >
-          <HelpCircle className="w-4 h-4" />
+          ❓
         </button>
       </div>
     </header>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { X, ArrowRightLeft, Thermometer, Globe2, Clock, Orbit, Weight } from 'lucide-react';
 import { CELESTIAL_BODIES } from '../data/planetsData';
 import { soundEngine } from '../utils/audio';
 
@@ -30,7 +29,7 @@ export default function ComparisonModal({ initialPlanetA, onClose }) {
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30">
-              <ArrowRightLeft className="w-5 h-5" />
+              ⚖️
             </div>
             <div>
               <h2 className="text-xl font-bold font-cinzel text-white">
@@ -45,7 +44,7 @@ export default function ComparisonModal({ initialPlanetA, onClose }) {
             onClick={onClose}
             className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <X className="w-5 h-5" />
+            ✕
           </button>
         </div>
 

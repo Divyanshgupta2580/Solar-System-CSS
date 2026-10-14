@@ -1,5 +1,4 @@
 import React from 'react';
-import { ZoomIn, ZoomOut, RotateCcw, Maximize2 } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 
 export default function QuickZoomHUD({ zoom, setZoom, onResetView }) {
@@ -32,7 +31,7 @@ export default function QuickZoomHUD({ zoom, setZoom, onResetView }) {
           title="Zoom Out (Scroll Down / -)"
           aria-label="Zoom out"
         >
-          <ZoomOut className="w-4 h-4" />
+          🔍-
         </button>
 
         {/* Smooth Zoom Slider */}
@@ -59,7 +58,7 @@ export default function QuickZoomHUD({ zoom, setZoom, onResetView }) {
           title="Zoom In (Scroll Up / +)"
           aria-label="Zoom in"
         >
-          <ZoomIn className="w-4 h-4" />
+          🔍+
         </button>
 
         <div className="w-[1px] h-4 bg-white/15 mx-0.5" />
@@ -71,7 +70,7 @@ export default function QuickZoomHUD({ zoom, setZoom, onResetView }) {
           title="Reset camera & center view (R)"
           aria-label="Reset view"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
+          🔄
         </button>
       </div>
 
